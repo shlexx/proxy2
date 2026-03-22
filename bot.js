@@ -1,4 +1,5 @@
 const { Client, GatewayIntentBits } = require('discord.js');
+const fetch = require('node-fetch');
 
 const client = new Client({
   intents: [
@@ -10,6 +11,10 @@ const client = new Client({
 
 const WORKER_URL = 'https://proxy.ginirbi.workers.dev/discord-message';
 const CHANNEL_NAME = 'main';
+
+client.on('ready', () => {
+  console.log(`Logged in as ${client.user.tag}`);
+});
 
 client.on('messageCreate', async (message) => {
   if (message.author.bot) return;
@@ -24,6 +29,7 @@ client.on('messageCreate', async (message) => {
         content: message.content
       })
     });
+    console.log('Forwarded message from', message.author.username);
   } catch (err) {
     console.error('Failed to forward message:', err);
   }
